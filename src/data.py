@@ -1,3 +1,4 @@
+import torch
 from datasets import load_dataset
 from torch.utils.data import DataLoader, Dataset
 from transformers import AutoTokenizer
@@ -61,6 +62,20 @@ class DeduplicatedTextDataset(Dataset):
 
     def __getitem__(self, idx):
         return self.deduped_chunks[idx]
+
+
+class RandomBitstringDataset(Dataset):
+    def __init__(self, dataset_size: int, seq_len: int = 64, vocab_size: int = 2048):
+        self.dataset_size = dataset_size
+        self.seq_len = seq_len
+        self.vocab_size = vocab_size
+
+    def __len__(self):
+        return self.dataset_size
+
+    def __getitem__(self, idx):
+        x = torch.randint(0, self.vocab_size, (self.seq_len,))
+        return x[:-1], x[1:]  # input and target
 
 
 # Example usage
