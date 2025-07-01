@@ -4,6 +4,8 @@
 
 ## Prepare data
 
+- OpenWebText dataset
+
 ```bash
-uv run src/data.py
+uv run src/openwebtext/prepare.py
 ```

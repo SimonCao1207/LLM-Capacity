@@ -11,13 +11,12 @@ dependencies = [
     "numpy",
     "psutil>=6.1.1",
     "pytest>=8.3.4",
-    "torch~=2.6.0; sys_platform != 'darwin' or platform_machine != 'x86_64'",
-    "torch~=2.2.2; sys_platform == 'darwin' and platform_machine == 'x86_64'", # Intel Macs
-    "tqdm>=4.67.1",
-    "wandb>=0.19.7",
+    "torch==2.6.0",
+    "tqdm",
+    "wandb",
     "ruff>=0.12.0",
     "transformers==4.53.0",
-    "datasets==3.6.0",
+    "datasets",
     "tiktoken==0.9.0"
 ]
 
@@ -28,6 +27,14 @@ include = ["src"]
 [tool.uv]
 package = true
 python-preference = "managed"
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu118" }
+
+[[tool.uv.index]]
+name = "pytorch-cu118"
+url = "https://download.pytorch.org/whl/cu118"
+explicit = true
 
 [tool.pytest.ini_options]
 log_cli = true
