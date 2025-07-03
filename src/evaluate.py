@@ -19,7 +19,7 @@ vocab_size = 2048
 batch_size = 2048  # evaluation micro-batch size
 
 # -------------------- Load Model --------------------
-ckpt_path = os.path.join(out_dir, "ckpt_synthetic_7M_1M.pt")
+ckpt_path = os.path.join(out_dir, "ckpt_10000.pt")
 checkpoint = torch.load(ckpt_path, map_location=device)
 model_args = checkpoint["model_args"]
 
@@ -44,7 +44,7 @@ num_batches = math.ceil(N_seq / batch_size)
 print(f"Evaluating {N_seq:,} sequences of length {block_size} in {num_batches} batches...")
 
 # -------------------- Inference --------------------
-total_log_likelihood = 0.0
+total_loss = 0.0
 with torch.no_grad():
     for i in tqdm(range(0, N_seq, batch_size), desc="Evaluating batches"):
         x_batch = []
@@ -62,29 +62,19 @@ with torch.no_grad():
             logits, loss = model(X, Y)
 
             # Calculate log-likelihood for this batch
-            # logits shape: (batch_size, seq_len, vocab_size)
             # Y shape: (batch_size, seq_len)
             batch_size_actual = Y.size(0)
             seq_len = Y.size(1)
+            assert seq_len == block_size
 
-            # Reshape for easier computation
-            logits_flat = logits.view(-1, vocab_size)  # (batch_size * seq_len, vocab_size)
-            targets_flat = Y.view(-1)  # (batch_size * seq_len,)
+            batch_tokens = batch_size_actual * seq_len
 
-            # Calculate log probabilities
-            log_probs = torch.nn.functional.log_softmax(logits_flat, dim=-1)
-
-            # Get log probabilities for the actual targets
-            target_log_probs = log_probs.gather(1, targets_flat.unsqueeze(1)).squeeze(1)
-
-            # Sum log probabilities (in natural log)
-            batch_log_likelihood = target_log_probs.sum().item()
-
-            total_log_likelihood += batch_log_likelihood
+            # Accumulate total loss (sum of negative log-likelihoods)
+            total_loss += loss.item() * batch_tokens
 
 # -------------------- Memorization Computation --------------------
 H_x = N_seq * block_size * math.log2(vocab_size)
-H_K_x_given_theta = -total_log_likelihood / math.log(2)
+H_K_x_given_theta = total_loss / math.log(2)
 
 # Memorization: mem(x, θ̂) = H(x) - H_K(x | θ̂)
 memorization = H_x - H_K_x_given_theta

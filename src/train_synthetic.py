@@ -35,7 +35,7 @@ from model import GPT, GPTConfig
 # default config values designed to train a gpt2 (6.86M) on Synthetic data
 # I/O
 log_interval = 1
-eval_interval = 10
+eval_interval = 100
 eval_iters = 200
 init_from = "scratch"  # 'scratch' or 'resume' or 'gpt2*'
 
@@ -48,7 +48,7 @@ out_dir = "out/synthetic_7M_1M"  # output directory
 # data
 dataset = "synthetic"
 gradient_accumulation_steps = 5 * 8  # used to simulate larger batch sizes
-batch_size = 2048  # if gradient_accumulation_steps > 1, this is the micro-batch size
+batch_size = 1024  # if gradient_accumulation_steps > 1, this is the micro-batch size
 block_size = 64  # sequence length
 
 # model
@@ -60,7 +60,7 @@ bias = False  # do we use bias inside LayerNorm and Linear layers?
 
 # adamw optimizer
 learning_rate = 6e-4  # max learning rate
-max_iters = 2500  # total number of training iterations
+max_iters = 10000  # total number of training iterations
 weight_decay = 1e-1
 beta1 = 0.9
 beta2 = 0.95
@@ -69,7 +69,7 @@ grad_clip = 1.0  # clip gradients at this value, or disable if == 0.0
 # learning rate decay settings
 decay_lr = True  # whether to decay the learning rate
 warmup_iters = 100  # how many steps to warm up for
-lr_decay_iters = 2500  # should be ~= max_iters per Chinchilla
+lr_decay_iters = 10000  # should be ~= max_iters per Chinchilla
 min_lr = 6e-5  # minimum learning rate, should be ~= learning_rate/10 per Chinchilla
 
 # DDP settings
