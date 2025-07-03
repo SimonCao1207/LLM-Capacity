@@ -21,5 +21,5 @@ print(f"train_ids shape: {train_ids.shape}, dtype: {train_ids.dtype}")
 train_ids.tofile(os.path.join(os.path.dirname(__file__), "train.bin"))
 
 # Save meta info
-with open("meta.pkl", "wb") as f:
+with open(os.path.join(os.path.dirname(__file__), "meta.pkl"), "wb") as f:
     pickle.dump({"vocab_size": V}, f)
