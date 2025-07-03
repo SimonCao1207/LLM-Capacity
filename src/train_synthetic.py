@@ -48,7 +48,7 @@ out_dir = "out/synthetic_7M_1M"  # output directory
 # data
 dataset = "synthetic"
 gradient_accumulation_steps = 5 * 8  # used to simulate larger batch sizes
-batch_size = 1024  # if gradient_accumulation_steps > 1, this is the micro-batch size
+batch_size = 2048  # if gradient_accumulation_steps > 1, this is the micro-batch size
 block_size = 64  # sequence length
 
 # model
