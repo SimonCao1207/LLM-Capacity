@@ -208,3 +208,5 @@ __marimo__/
 uv.lock
 out/
 *.bin
+*.pkl
+wandb
