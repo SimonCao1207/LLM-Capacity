@@ -60,7 +60,7 @@ bias = False  # do we use bias inside LayerNorm and Linear layers?
 
 # adamw optimizer
 learning_rate = 6e-4  # max learning rate
-max_iters = 10000  # total number of training iterations
+max_iters = 10000  # increase this to 1e6 to match original paper setting
 weight_decay = 1e-1
 beta1 = 0.9
 beta2 = 0.95
