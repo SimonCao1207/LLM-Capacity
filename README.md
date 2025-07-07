@@ -7,13 +7,13 @@ Replication of paper ["How much do language models memorize?"](https://arxiv.org
 - Synthetic Data (~1M sequences of length 64 tokens, uniformedly sampled) 
 
 ```bash
-uv run src/synthetic/prepare.py
+uv run data/synthetic/prepare.py
 ```
 
 - OpenWebText dataset (optional, for real text experiments)
 
 ```bash
-uv run src/openwebtext/prepare.py
+uv run data/openwebtext/prepare.py
 ```
 
 ## Train with synthetic data
